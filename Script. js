@@ -1,0 +1,72 @@
+const navLinks = document.querySelectorAll('nav a');
+const heroButton = document.querySelector('#home button');
+const contactForm = document.querySelector('#contact form');
+const servicesList = document.querySelector('#services ul');
+const aboutText = document.querySelector('#about p');
+
+// Data
+const services = [
+  { id: 1, title: 'Service 1', description: 'Lorem ipsum dolor sit amet.' },
+  { id: 2, title: 'Service 2', description: 'Lorem ipsum dolor sit amet.' },
+  { id: 3, title: 'Service 3', description: 'Lorem ipsum dolor sit amet.' },
+];
+
+// Functions
+function scrollToSection(sectionId) {
+  const section = document.querySelector(sectionId);
+  section.scrollIntoView({ behavior: 'smooth' });
+}
+
+function renderServices() {
+  servicesList.innerHTML = '';
+  services.forEach((service) => {
+    const li = document.createElement('li');
+    li.innerHTML = `
+      <h3>${service.title}</h3>
+      <p>${service.description}</p>
+    `;
+    servicesList.appendChild(li);
+  });
+}
+
+function handleFormSubmission(event) {
+  event.preventDefault();
+  const name = document.querySelector('#name').value;
+  const email = document.querySelector('#email').value;
+  const message = document.querySelector('#message').value;
+  
+  // Send form data to server (example)
+  fetch('/contact', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, email, message }),
+  })
+  .then((response) => response.json())
+  .then((data) => console.log(data))
+  .catch((error) => console.error(error));
+}
+
+function handleHeroButton() {
+  scrollToSection('#about');
+}
+
+function handleNavLinkClick(event) {
+  event.preventDefault();
+  const sectionId = event.target.getAttribute('href');
+  scrollToSection(sectionId);
+}
+
+// Event listeners
+navLinks.forEach((link) => {
+  link.addEventListener('click', handleNavLinkClick);
+});
+
+heroButton.addEventListener('click', handleHeroButton);
+
+contactForm.addEventListener('submit', handleFormSubmission);
+
+// Initialize
+renderServices();
+
+
+ 
